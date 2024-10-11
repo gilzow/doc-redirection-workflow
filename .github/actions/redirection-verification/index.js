@@ -40,7 +40,7 @@ try {
         .catch((err)=>{
           core.warning(`issue encountered with path ${path}!!! Returned status is ${err.request.status}`)
           problems.set(path,anchors[path].to)
-          //console.log(err)
+          console.log(err.toJSON())
         })
       if (index === array.length -1) resolve();
     });
@@ -53,7 +53,8 @@ try {
        */
       core.error('There was an error with one or more redirects.')
       core.startGroup('Redirections that failed')
-      core.info(Object.fromEntries(problems).toString())
+      const mapBad = Object.fromEntries(problems)
+      core.info(JSON.stringify(mapBad))
       core.endGroup()
       core.setFailed('There was an error with one or more contracted redirects.')
     } else  {
