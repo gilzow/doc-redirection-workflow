@@ -53,7 +53,7 @@ try {
        */
       core.error('There was an error with one or more redirects.')
       core.startGroup('Redirections that failed')
-      core.info(Object.fromEntries((problems)).toString())
+      core.info(Object.fromEntries(problems).toString())
       core.endGroup()
       core.setFailed('There was an error with one or more contracted redirects.')
     } else  {
