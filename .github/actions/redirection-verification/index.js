@@ -38,9 +38,9 @@ try {
           core.info(`Response for our check of ${path} is ${response.status}`)
         })
         .catch((err)=>{
-          core.warning(`issue encountered with path ${path}!!! Returned status is ${err.request.status}`)
+          core.warning(`issue encountered with path ${path}!!! Returned status is ${err.status}`)
           problems.set(path,anchors[path].to)
-          console.log(err.toJSON())
+          //console.log(err.toJSON())
         })
       if (index === array.length -1) resolve();
     });
