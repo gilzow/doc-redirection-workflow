@@ -33,15 +33,14 @@ try {
   const validateRedirects = new Promise((resolve, reject) => {
     RedirectKeys.forEach(async (path, index, array) => {
       //console.log(`I'm going to test ${path} to see if it goes to ${anchors[path].to}`)
-      await axios.head(path)
-        .then((response)=>{
-          core.info(`Response for our check of ${path} is ${response.status}`)
-        })
-        .catch((err)=>{
-          core.warning(`issue encountered with path ${path}!!! Returned status is ${err.status}`)
-          problems.set(path,anchors[path].to)
-          //console.log(err.toJSON())
-        })
+
+      try {
+        const response = await axios.head(path);
+        core.info(`Response for our check of ${path} is ${response.status}`)
+      } catch (reqerr) {
+        core.warning(`issue encountered with path ${path}!!! Returned status is ${reqerr.status}`)
+        problems.set(path,anchors[path].to)
+      }
       if (index === array.length -1) resolve();
     });
   });
