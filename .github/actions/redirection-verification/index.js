@@ -55,7 +55,16 @@ try {
       core.info(JSON.stringify(mapBad))
       core.endGroup()
       let aryProblems = Array.from(problems,([from,to]) => ({from,to}))
-      core.summary.addTable(aryProblems)
+      core.summary.addTable([aryProblems])
+      // const tableData = [
+      //   {data: 'Header1', header: true},
+      //   {data: 'Header2', header: true},
+      //   {data: 'Header3', header: true},
+      //   {data: 'MyData1'},
+      //   {data: 'MyData2'},
+      //   {data: 'MyData3'}
+      // ]
+
       core.summary.write()
       core.setFailed('There was an error with one or more contracted redirects.')
     } else  {
