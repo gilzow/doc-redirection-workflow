@@ -4,14 +4,13 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const axios = require('axios');
 const problems = new Map()
-const axiosPromises = []
+
 /**
  * @todo should we verify that the URL is valid before we set it?
  * @type {string}
  */
 axios.defaults.baseURL = core.getInput('environment-url')
-// const context = github.context;
-// console.log(context)
+
 try {
   /**
    * Can we get the full workspace path to this file?
@@ -30,32 +29,22 @@ try {
      */
     return path.startsWith('/anchors/')
   })
-  RedirectKeys.forEach(async (path)=>{
-    try {
-      const response = await axios.head(path);
-      axiosPromises.push(response)
-    } catch (reqerr) {
-      core.warning(`issue encountered with path ${path}!!! Returned status is ${reqerr.status}`)
-      problems.set(path,anchors[path].to)
-    }
-  })
 
-  // const validateRedirects = new Promise((resolve, reject) => {
-  //   RedirectKeys.forEach(async (path, index, array) => {
-  //     //console.log(`I'm going to test ${path} to see if it goes to ${anchors[path].to}`)
-  //
-  //     try {
-  //       const response = await axios.head(path);
-  //       core.info(`Response for our check of ${path} is ${response.status}`)
-  //     } catch (reqerr) {
-  //       core.warning(`issue encountered with path ${path}!!! Returned status is ${reqerr.status}`)
-  //       problems.set(path,anchors[path].to)
-  //     }
-  //     if (index === array.length -1) resolve();
-  //   });
-  // });
+  const validateRedirects = RedirectKeys.map(async (path, index, array) => {
+      //console.log(`I'm going to test ${path} to see if it goes to ${anchors[path].to}`)
 
-  Promise.all(axiosPromises).then(() => {
+      try {
+        const response = await axios.head(path);
+        core.info(`Response for our check of ${path} is ${response.status}`)
+        return response
+      } catch (reqerr) {
+        core.warning(`issue encountered with path ${path}!!! Returned status is ${reqerr.status}`)
+        problems.set(path,anchors[path].to)
+      }
+    });
+
+
+  Promise.all(validateRedirects).then(() => {
     if(problems.size > 0) {
       /**
        * @todo swap this out with core.summary.addTable()
