@@ -54,6 +54,8 @@ try {
       const mapBad = Object.fromEntries(problems)
       core.info(JSON.stringify(mapBad))
       core.endGroup()
+      core.summary.addTable(problems)
+      core.summary.write()
       core.setFailed('There was an error with one or more contracted redirects.')
     } else  {
       core.notice('All contracted redirections are valid.')
