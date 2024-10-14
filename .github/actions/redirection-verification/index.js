@@ -55,7 +55,7 @@ try {
   //   });
   // });
 
-  Promise.all(...axiosPromises).then(() => {
+  Promise.all(axiosPromises).then(() => {
     if(problems.size > 0) {
       /**
        * @todo swap this out with core.summary.addTable()
