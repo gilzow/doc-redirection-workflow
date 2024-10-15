@@ -53,7 +53,7 @@ try {
 
 
   Promise.all(validateRedirects).then(() => {
-    if(tableData.size > 1) {
+    if(tableData.length > 1) {
       /**
        * @todo swap this out with core.summary.addTable()
        */
