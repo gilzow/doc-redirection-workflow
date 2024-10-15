@@ -4,6 +4,12 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const axios = require('axios');
 const problems = new Map()
+const tableData = [
+  [
+    {data: 'From', header: true},
+    {data: 'To', header: true}
+  ]
+]
 
 /**
  * @todo should we verify that the URL is valid before we set it?
@@ -39,35 +45,37 @@ try {
         return response
       } catch (reqerr) {
         core.warning(`issue encountered with path ${path}!!! Returned status is ${reqerr.status}`)
-        problems.set(path,anchors[path].to)
+        let row = [{data: path},{data: anchors[path].to }]
+        tableData.push(row)
+        //problems.set(path,anchors[path].to)
       }
     });
 
 
   Promise.all(validateRedirects).then(() => {
-    if(problems.size > 0) {
+    if(tableData.size > 1) {
       /**
        * @todo swap this out with core.summary.addTable()
        */
       core.error('There was an error with one or more redirects.')
-      core.startGroup('Redirections that failed')
-      const mapBad = Object.fromEntries(problems)
-      core.info(JSON.stringify(mapBad))
-      core.endGroup()
+      // core.startGroup('Redirections that failed')
+      // const mapBad = Object.fromEntries(problems)
+      // core.info(JSON.stringify(mapBad))
+      // core.endGroup()
       // let aryProblems = Array.from(problems,([from,to]) => ({from,to}))
       // core.summary.addTable([aryProblems])
-      const tableData = [
-          [
-            {data: 'Header1', header: true},
-            {data: 'Header2', header: true},
-            {data: 'Header3', header: true},
-          ],
-          [
-            {data: 'MyData1'},
-            {data: 'MyData2'},
-            {data: 'MyData3'}
-          ],
-      ]
+      // const tableData = [
+      //     [
+      //       {data: 'Header1', header: true},
+      //       {data: 'Header2', header: true},
+      //       {data: 'Header3', header: true},
+      //     ],
+      //     [
+      //       {data: 'MyData1'},
+      //       {data: 'MyData2'},
+      //       {data: 'MyData3'}
+      //     ],
+      // ]
 
       core.summary.addTable(tableData)
 
