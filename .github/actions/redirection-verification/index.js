@@ -34,7 +34,7 @@ function linkify(path,url) {
     link = path;
   }
 
-  return `[${path}](${link})`
+  return `<a href="${link}">${path}</a>`
 }
 
 /**
