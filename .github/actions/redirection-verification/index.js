@@ -11,6 +11,32 @@ const tableData = [
   ]
 ]
 
+function linkify(path,url) {
+  let link = ""
+  /**
+   * [text](full-url)
+   * where:
+   * text == path
+   * full-url == url+path
+   */
+
+  /**
+   * We only want to append the URL if the path doesnt already start with https
+   */
+  if (!path.startsWith('https:')) {
+    if(url.endsWith('/')) {
+      url = url.slice(0,-1);
+    }
+
+    let link = url+path;
+
+  } else {
+    let link = path;
+  }
+
+  return `[${path}](${link})`
+}
+
 /**
  * @todo should we verify that the URL is valid before we set it?
  * @type {string}
@@ -45,7 +71,7 @@ try {
         return response
       } catch (reqerr) {
         core.warning(`issue encountered with path ${path}!!! Returned status is ${reqerr.status}`)
-        let row = [{data: path},{data: anchors[path].to }]
+        let row = [{data: linkify(path, axios.defaults.baseURL)},{data: linkify( anchors[path].to, axios.defaults.baseURL) }]
         tableData.push(row)
         //problems.set(path,anchors[path].to)
       }
