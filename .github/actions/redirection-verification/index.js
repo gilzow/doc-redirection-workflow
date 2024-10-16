@@ -28,10 +28,10 @@ function linkify(path,url) {
       url = url.slice(0,-1);
     }
 
-    let link = url+path;
+    link = url+path;
 
   } else {
-    let link = path;
+    link = path;
   }
 
   return `[${path}](${link})`
