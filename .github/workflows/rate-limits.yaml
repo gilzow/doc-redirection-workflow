@@ -8,5 +8,7 @@ jobs:
     steps:
       - run: |
           # ratelimit=$(gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit )
+          currdate=$(date)
+          echo "::notice::Current rate limits as of ${currdate}"
           gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /rate_limit | jq
-          echo "::notice title=Current Rat Usage::${ratelimit}"
+          #echo "::notice title=Current Rat Usage::${ratelimit}"
